@@ -1,0 +1,50 @@
+name: Rebalanceig mensual del bot
+
+# Fa córrer live_bot.py automàticament UN COP AL MES, sense que el teu
+# ordinador hagi d'estar engegat. Cost: 0 — GitHub Actions és gratuït per
+# a aquest volum d'ús (uns 2000 minuts/mes gratis, i això triga segons).
+#
+# Requisit: a Settings -> Secrets and variables -> Actions del teu
+# repositori, crea quatre "secrets":
+#   ALPACA_API_KEY, ALPACA_SECRET_KEY, TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID
+# Mai posis les claus directament en aquest fitxer.
+
+on:
+  schedule:
+    # El dia 1 de cada mes a les 15:45 UTC (mercat USA obert)
+    - cron: "45 15 1 * *"
+  workflow_dispatch: {}  # permet llançar-ho manualment des de la pestanya Actions
+
+permissions:
+  contents: write
+
+jobs:
+  rebalance:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Instal·lar dependències
+        run: pip install -r requirements.txt
+
+      - name: Executar rebalanceig
+        env:
+          ALPACA_API_KEY: ${{ secrets.ALPACA_API_KEY }}
+          ALPACA_SECRET_KEY: ${{ secrets.ALPACA_SECRET_KEY }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python live_bot.py
+
+      - name: Desar dashboard i estat al repositori
+        run: |
+          git config user.name "trading-bot"
+          git config user.email "trading-bot@users.noreply.github.com"
+          git add dashboard.html dashboard_state.json rebalance_history.json \
+                   sleeve_ledger.json capital_ledger.json risk_guardian_state.json \
+                   trading_bot.log 2>/dev/null || true
+          git commit -m "Rebalanceig automàtic $(date -u +%Y-%m-%d)" || echo "Sense canvis a desar"
+          git push

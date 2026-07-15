@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+.env
+dashboard_demo.html
+dashboard_demo_state.json
+backtest_equity_curve.csv

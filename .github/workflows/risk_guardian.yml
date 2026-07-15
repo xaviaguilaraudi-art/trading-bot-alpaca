@@ -1,0 +1,50 @@
+name: Vigilant de risc horari
+
+# Comprova l'equity de cada àmbit cada hora, NOMÉS en horari aproximat de
+# mercat USA (dilluns a divendres, ~13:00-20:00 UTC ~ 15:00-22:00 hora
+# peninsular, sense ajust exacte per l'horari d'estiu/hivern — un marge
+# d'una hora no canvia res per aquest propòsit). Si detecta un problema
+# greu, mou l'àmbit afectat a l'actiu segur i avisa per Telegram a l'acte.
+#
+# Cost: 0 — són ~7 execucions curtes al dia, 5 dies a la setmana, molt per
+# sota del pla gratuït de GitHub Actions.
+#
+# Mateixos Secrets que rebalance.yml: ALPACA_API_KEY, ALPACA_SECRET_KEY,
+# TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID.
+
+on:
+  schedule:
+    - cron: "0 13-20 * * 1-5"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  guardian:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Instal·lar dependències
+        run: pip install -r requirements.txt
+
+      - name: Comprovar risc
+        env:
+          ALPACA_API_KEY: ${{ secrets.ALPACA_API_KEY }}
+          ALPACA_SECRET_KEY: ${{ secrets.ALPACA_SECRET_KEY }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python risk_guardian.py
+
+      - name: Desar estat si hi ha hagut algun canvi
+        run: |
+          git config user.name "trading-bot"
+          git config user.email "trading-bot@users.noreply.github.com"
+          git add sleeve_ledger.json risk_guardian_state.json risk_guardian.log 2>/dev/null || true
+          git commit -m "Comprovació de risc $(date -u +%Y-%m-%dT%H:%M)" || echo "Sense canvis a desar"
+          git push
