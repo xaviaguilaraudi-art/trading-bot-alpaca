@@ -24,6 +24,8 @@ import json
 import logging
 from datetime import datetime
 
+import pandas as pd
+
 from config import SLEEVES, PAPER_TRADING, TICKER_LABELS
 from strategy import decide_all_sleeves
 from sleeve_ledger import load_ledger, save_ledger, mark_to_market_and_update, total_capital, reconcile_with_broker_equity
@@ -57,8 +59,21 @@ def get_alpaca_client():
 def get_price_history(tickers, lookback_days=280):
     """Descarrega històric via yfinance (requereix internet a la màquina on s'executi)."""
     import yfinance as yf
+    yf.set_tz_cache_location("/tmp")  # evita OperationalError('database is locked') a GitHub Actions
     data = yf.download(tickers, period=f"{lookback_days}d", auto_adjust=True, progress=False)["Close"]
-    return {t: data[t].dropna() for t in tickers}
+    result = {t: data[t].dropna() for t in tickers}
+    # Reintent individual per tickers que hagin tornat buits (fallada puntual de descàrrega)
+    empty = [t for t, s in result.items() if len(s) == 0]
+    if empty:
+        log.warning(f"Reintentant descàrrega per: {empty}")
+        retry = yf.download(empty, period=f"{lookback_days}d", auto_adjust=True, progress=False)["Close"]
+        for t in empty:
+            s = retry[t].dropna() if t in retry else pd.Series(dtype=float)
+            if len(s) > 0:
+                result[t] = s
+            else:
+                raise RuntimeError(f"No s'ha pogut descarregar dades per {t} després de reintent.")
+    return result
 
 
 def _sleeve_reason(sleeve_cfg, chosen_ticker, halted, halt_reason):
