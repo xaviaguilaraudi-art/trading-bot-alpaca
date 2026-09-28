@@ -18,6 +18,7 @@ REQUISITS:
 
 import math
 import os
+import time
 import sys
 import json
 import logging
@@ -83,34 +84,75 @@ def rebalance_to_targets(client, target_dollars: dict):
     from alpaca.trading.requests import MarketOrderRequest
     from alpaca.trading.enums import OrderSide, TimeInForce
 
+    # 1) Cancel·la ordres pendents d'execucions anteriors, perquè no es
+    #    dupliquin (les ordres pendents no surten a get_all_positions()).
+    try:
+        client.cancel_orders()
+        time.sleep(2)
+    except Exception as e:
+        log.warning(f"No s'han pogut cancel·lar ordres pendents: {e}")
+
     positions = {p.symbol: float(p.market_value) for p in client.get_all_positions()}
     account_equity = float(client.get_account().equity)
+    min_trade = max(account_equity * 0.005, 1.0)  # ignora ajustos menors al 0.5%
 
+    # 2) Primer VENDES (alliberen buying power), després COMPRES.
+    sells, buys = [], []
+    for ticker, current_value in positions.items():
+        target_value = target_dollars.get(ticker, 0.0)
+        if target_value <= 0:
+            sells.append((ticker, None))  # tancar sencera
+        elif current_value - target_value >= min_trade:
+            sells.append((ticker, current_value - target_value))
     for ticker, target_value in target_dollars.items():
-        current_value = positions.get(ticker, 0.0)
-        diff_value = target_value - current_value
+        diff_value = target_value - positions.get(ticker, 0.0)
+        if diff_value >= min_trade:
+            buys.append((ticker, diff_value))
 
-        if abs(diff_value) < max(account_equity * 0.005, 1.0):  # ignora ajustos menors al 0.5%
-            continue
-
-        side = OrderSide.BUY if diff_value > 0 else OrderSide.SELL
-        notional = math.floor(abs(diff_value) * 100) / 100
+    def _submit(ticker, side, amount):
+        notional = math.floor(amount * 100) / 100
         log.info(f"Ordre: {side.value} {ticker} per ${notional}")
         try:
-            order = MarketOrderRequest(
+            client.submit_order(MarketOrderRequest(
                 symbol=ticker, notional=notional, side=side, time_in_force=TimeInForce.DAY,
-            )
-            client.submit_order(order)
+            ))
         except Exception as e:
             log.warning(f"No s'ha pogut enviar l'ordre de {ticker}: {e}")
 
-    for ticker in positions:
-        if ticker not in target_dollars or target_dollars[ticker] <= 0:
+    for ticker, amount in sells:
+        if amount is None:
             try:
                 client.close_position(ticker)
                 log.info(f"Tancant posició residual a {ticker}")
             except Exception as e:
                 log.warning(f"No s'ha pogut tancar {ticker}: {e}")
+        else:
+            _submit(ticker, OrderSide.SELL, amount)
+
+    if sells:
+        _wait_for_fills(client)
+
+    if buys:
+        # No gastar més del buying power real (evita errors per cèntims)
+        buying_power = float(client.get_account().buying_power)
+        total_buys = sum(a for _, a in buys)
+        scale = min(1.0, buying_power / total_buys) if total_buys > 0 else 1.0
+        for ticker, amount in buys:
+            _submit(ticker, OrderSide.BUY, amount * scale)
+
+
+def _wait_for_fills(client, timeout_s: int = 60):
+    """Espera que no quedin ordres obertes (fins a timeout_s segons)."""
+    from alpaca.trading.requests import GetOrdersRequest
+    from alpaca.trading.enums import QueryOrderStatus
+    waited = 0
+    while waited < timeout_s:
+        open_orders = client.get_orders(GetOrdersRequest(status=QueryOrderStatus.OPEN))
+        if not open_orders:
+            return
+        time.sleep(3)
+        waited += 3
+    log.warning("Hi ha vendes que encara no s'han executat; les compres poden quedar curtes.")
 
 
 def load_history() -> list:
@@ -136,6 +178,17 @@ def main():
     log.info(f"=== Iniciant rebalanceig mensual — mode: {mode} ===")
 
     client = get_alpaca_client()
+
+    # Si el mercat està tancat, les ordres es queden pendents i es poden
+    # duplicar en una segona execució. Millor no fer res.
+    clock = client.get_clock()
+    if not clock.is_open:
+        msg = (f"Mercat tancat (proper obertura: {clock.next_open}). "
+               "No s'ha fet cap rebalanceig. Torna-ho a llançar amb el mercat obert.")
+        log.warning(msg)
+        send_telegram_message(f"⏸️ {msg}")
+        return
+
     account = client.get_account()
     broker_equity = float(account.equity)
     cash = float(account.cash)
@@ -212,6 +265,8 @@ def main():
     history = load_history()
     today = datetime.today().strftime("%Y-%m-%d")
     spy_price = latest_prices.get("SPY")
+    # Si ja hi ha un rebalanceig d'avui (re-execució), el substituïm en lloc de duplicar-lo
+    history = [h for h in history if h.get("date") != today]
     history.append({
         "date": today,
         "equity": total_equity_now,
