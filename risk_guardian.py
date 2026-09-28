@@ -16,14 +16,17 @@ Requereix les mateixes variables d'entorn que live_bot.py:
     TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID (opcionals, però recomanats)
 """
 
+import json
 import os
 import sys
 import logging
+from datetime import datetime
 
 from config import SLEEVES, PAPER_TRADING
-from sleeve_ledger import load_ledger, save_ledger, mark_to_market_and_update
+from sleeve_ledger import load_ledger, save_ledger, mark_to_market_and_update, total_capital
 from risk_state import load_all, save_all, check_sleeve
 from telegram_alerts import send_telegram_message
+from dashboard import generate_dashboard
 
 logging.basicConfig(
     level=logging.INFO,
@@ -120,7 +123,51 @@ def main():
 
     save_ledger(ledger)
     save_all(risk_state)
+
+    _update_dashboard(ledger, prices)
     log.info("Comprovació de risc completada.")
+
+
+def _update_dashboard(ledger: dict, prices: dict):
+    history_file = "rebalance_history.json"
+    state_file = "dashboard_state.json"
+
+    if not os.path.exists(state_file):
+        return  # encara no hi ha cap rebalanceig mensual fet, res a actualitzar
+
+    now_str = datetime.now().strftime("%Y-%m-%d %H:%M")
+    total_equity = total_capital(ledger)
+    spy_price = prices.get("SPY")
+    current_sleeves = {name: ledger[name].get("holding", "") for name in SLEEVES}
+
+    # Actualitza rebalance_history.json
+    if os.path.exists(history_file):
+        with open(history_file) as f:
+            history = json.load(f)
+    else:
+        history = []
+    history.append({"date": now_str, "equity": total_equity, "spy_price": spy_price, "sleeves": current_sleeves})
+    with open(history_file, "w") as f:
+        json.dump(history, f, indent=2)
+
+    # Actualitza dashboard_state.json i regenera dashboard.html
+    with open(state_file) as f:
+        state = json.load(f)
+
+    state["last_updated"] = now_str
+    state["history"] = history
+    state["account"]["equity"] = total_equity
+    state["account"]["invested"] = total_equity
+    state["account"]["peak_equity"] = max(h["equity"] for h in history)
+
+    first = history[0]
+    state["performance"]["total_return_pct"] = (
+        total_equity / first["equity"] - 1 if first["equity"] else 0.0
+    )
+    if spy_price and first.get("spy_price"):
+        state["performance"]["benchmark_return_pct"] = spy_price / first["spy_price"] - 1
+
+    generate_dashboard(state, output_path="dashboard.html")
 
 
 if __name__ == "__main__":
