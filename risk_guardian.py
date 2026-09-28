@@ -124,11 +124,11 @@ def main():
     save_ledger(ledger)
     save_all(risk_state)
 
-    _update_dashboard(ledger, prices)
+    _update_dashboard(ledger, prices, broker_equity)
     log.info("Comprovació de risc completada.")
 
 
-def _update_dashboard(ledger: dict, prices: dict):
+def _update_dashboard(ledger: dict, prices: dict, broker_equity: float = None):
     history_file = "rebalance_history.json"
     state_file = "dashboard_state.json"
 
@@ -156,8 +156,11 @@ def _update_dashboard(ledger: dict, prices: dict):
 
     state["last_updated"] = now_str
     state["history"] = history
-    state["account"]["equity"] = total_equity
+    # equity = valor real del compte a Alpaca (invertit + efectiu)
+    real_equity = broker_equity if broker_equity is not None else total_equity
+    state["account"]["equity"] = real_equity
     state["account"]["invested"] = total_equity
+    state["account"]["cash"] = max(0.0, real_equity - total_equity)
     state["account"]["peak_equity"] = max(h["equity"] for h in history)
 
     first = history[0]

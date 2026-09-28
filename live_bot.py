@@ -298,6 +298,11 @@ def main():
 
     rebalance_to_targets(client, target_dollars)
 
+    try:
+        broker_equity_after = float(client.get_account().equity)
+    except Exception:
+        broker_equity_after = broker_equity
+
     total_equity_now = total_capital(ledger)
     capital_base = load_capital_base(total_equity_now)
     withdrawal = compute_suggested_withdrawal(total_equity_now, capital_base)
@@ -329,9 +334,10 @@ def main():
         "status": "HALTED" if any_halted else "OK",
         "halt_reason": next((s["reason"] for s in sleeve_summaries.values() if s["halted"]), None),
         "account": {
-            "equity": total_equity_now,
+            # equity = valor real del compte a Alpaca (invertit + efectiu)
+            "equity": broker_equity_after,
             "peak_equity": max(h["equity"] for h in history),
-            "cash": max(0.0, broker_equity - total_equity_now),
+            "cash": max(0.0, broker_equity_after - total_equity_now),
             "invested": total_equity_now,
         },
         "sleeves": sleeve_summaries,
