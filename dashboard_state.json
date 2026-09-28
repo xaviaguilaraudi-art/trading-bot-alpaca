@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-09-28 08:40",
+  "last_updated": "2026-09-28 10:56",
   "next_run": "2026-10-01",
   "mode": "PAPER",
   "status": "OK",
@@ -7,8 +7,8 @@
   "account": {
     "equity": 500.0,
     "peak_equity": 500.0,
-    "cash": 500.0,
-    "invested": 0.0
+    "cash": 0.0,
+    "invested": 500.0
   },
   "sleeves": {
     "core": {
@@ -59,6 +59,16 @@
     "since": "2026-09-28"
   },
   "history": [
+    {
+      "date": "2026-09-28",
+      "equity": 500.0,
+      "spy_price": 771.3499755859375,
+      "sleeves": {
+        "core": "EFA",
+        "sectors": "XLK",
+        "real_assets": "DBC"
+      }
+    },
     {
       "date": "2026-09-28",
       "equity": 500.0,
