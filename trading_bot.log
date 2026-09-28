@@ -13,3 +13,9 @@
 2026-09-28 10:56:53,314 [WARNING] No s'ha pogut enviar l'ordre de DBC: {"buying_power":"0","code":40310000,"cost_basis":"166.66","message":"insufficient buying power"}
 2026-09-28 10:56:53,315 [INFO] Dashboard actualitzat: dashboard.html
 2026-09-28 10:56:53,798 [INFO] === Rebalanceig completat ===
+2026-09-28 13:42:12,708 [INFO] === Iniciant rebalanceig mensual — mode: PAPER ===
+2026-09-28 13:42:18,064 [INFO] Ordre: buy EFA per $165.81
+2026-09-28 13:42:18,126 [INFO] Ordre: buy XLK per $165.77
+2026-09-28 13:42:18,196 [INFO] Ordre: buy DBC per $167.1
+2026-09-28 13:42:18,264 [INFO] Dashboard actualitzat: dashboard.html
+2026-09-28 13:42:18,789 [INFO] === Rebalanceig completat ===

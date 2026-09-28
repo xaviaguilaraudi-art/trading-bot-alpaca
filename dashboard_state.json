@@ -1,21 +1,21 @@
 {
-  "last_updated": "2026-09-28 10:56",
+  "last_updated": "2026-09-28 13:42",
   "next_run": "2026-10-01",
   "mode": "PAPER",
   "status": "OK",
   "halt_reason": null,
   "account": {
-    "equity": 500.0,
-    "peak_equity": 500.0,
-    "cash": 0.0,
-    "invested": 500.0
+    "equity": 498.69008012024693,
+    "peak_equity": 498.69008012024693,
+    "cash": 1.3099198797530676,
+    "invested": 498.69008012024693
   },
   "sleeves": {
     "core": {
       "label": "Accions globals vs bons",
       "ticker": "EFA",
       "ticker_label": "Accions de grans empreses internacionals",
-      "capital": 166.66666666666666,
+      "capital": 165.81406952125715,
       "reason": "Accions de grans empreses internacionals ha tingut el millor rendiment recent d'entre les opcions d'aquest àmbit, amb una tendència a l'alça.",
       "halted": false
     },
@@ -23,7 +23,7 @@
       "label": "Rotació de sectors del S&P 500",
       "ticker": "XLK",
       "ticker_label": "Sector tecnològic",
-      "capital": 166.66666666666666,
+      "capital": 165.77503521602804,
       "reason": "Sector tecnològic ha tingut el millor rendiment recent d'entre les opcions d'aquest àmbit, amb una tendència a l'alça.",
       "halted": false
     },
@@ -31,7 +31,7 @@
       "label": "Or i matèries primeres",
       "ticker": "DBC",
       "ticker_label": "Cistella de matèries primeres",
-      "capital": 166.66666666666666,
+      "capital": 167.10097538296174,
       "reason": "Cistella de matèries primeres ha tingut el millor rendiment recent d'entre les opcions d'aquest àmbit, amb una tendència a l'alça.",
       "halted": false
     }
@@ -40,7 +40,7 @@
     "label": "Accions globals vs bons",
     "ticker": "EFA",
     "ticker_label": "Accions de grans empreses internacionals",
-    "capital": 166.66666666666666,
+    "capital": 165.81406952125715,
     "reason": "Accions de grans empreses internacionals ha tingut el millor rendiment recent d'entre les opcions d'aquest àmbit, amb una tendència a l'alça.",
     "halted": false
   },
@@ -51,7 +51,7 @@
   "withdrawal": {
     "amount": 0.0,
     "threshold": 550.0,
-    "message": "Aquest mes no hi ha marge per retirar res. El compte encara no supera el coixí de seguretat (li falten 50,00 $ per arribar-hi). Deixa-ho créixer sense tocar-ho."
+    "message": "Aquest mes no hi ha marge per retirar res. El compte encara no supera el coixí de seguretat (li falten 51,31 $ per arribar-hi). Deixa-ho créixer sense tocar-ho."
   },
   "performance": {
     "total_return_pct": 0.0,
@@ -61,18 +61,8 @@
   "history": [
     {
       "date": "2026-09-28",
-      "equity": 500.0,
-      "spy_price": 771.3499755859375,
-      "sleeves": {
-        "core": "EFA",
-        "sectors": "XLK",
-        "real_assets": "DBC"
-      }
-    },
-    {
-      "date": "2026-09-28",
-      "equity": 500.0,
-      "spy_price": 771.3499755859375,
+      "equity": 498.69008012024693,
+      "spy_price": 767.2890014648438,
       "sleeves": {
         "core": "EFA",
         "sectors": "XLK",
