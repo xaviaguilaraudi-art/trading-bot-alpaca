@@ -11,8 +11,11 @@ name: Rebalanceig mensual del bot
 
 on:
   schedule:
-    # El dia 1 de cada mes a les 15:45 UTC (mercat USA obert)
-    - cron: "45 15 1 * *"
+    # Els dies 1 a 7 de cada mes a les 15:45 UTC (mercat USA obert tant a
+    # l'horari d'estiu com d'hivern). El bot només rebalanceja el PRIMER dia
+    # que troba el mercat obert (primer dia laborable); els altres dies veu
+    # que aquest mes ja està fet i surt sense fer res.
+    - cron: "45 15 1-7 * *"
   workflow_dispatch: {}  # permet llançar-ho manualment des de la pestanya Actions
 
 permissions:

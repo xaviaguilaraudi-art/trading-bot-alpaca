@@ -167,9 +167,23 @@ def save_history(history: list):
         json.dump(history, f, indent=2)
 
 
+def already_rebalanced_this_month() -> bool:
+    """True si a l'historial ja hi ha un rebalanceig mensual (data 'AAAA-MM-DD',
+    sense hora — les entrades horàries del vigilant de risc porten hora) d'aquest mes."""
+    this_month = datetime.today().strftime("%Y-%m")
+    return any(
+        len(h.get("date", "")) == 10 and h["date"].startswith(this_month)
+        for h in load_history()
+    )
+
+
 def _next_run_date() -> str:
+    """Primer dia laborable (dl-dv) del mes vinent. No té en compte festius
+    dels EUA; si ho és, el bot ho detecta i ho fa l'endemà."""
     now = datetime.today()
     nxt = now.replace(year=now.year + 1, month=1, day=1) if now.month == 12 else now.replace(month=now.month + 1, day=1)
+    while nxt.weekday() >= 5:
+        nxt = nxt.replace(day=nxt.day + 1)
     return nxt.strftime("%Y-%m-%d")
 
 
@@ -177,16 +191,28 @@ def main():
     mode = "PAPER" if PAPER_TRADING else "LIVE (DINERS REALS)"
     log.info(f"=== Iniciant rebalanceig mensual — mode: {mode} ===")
 
+    # Execució manual (botó "Run workflow" o en local) = forçar rebalanceig.
+    # Execució programada = només el primer dia laborable del mes.
+    manual_run = os.environ.get("GITHUB_EVENT_NAME", "manual") != "schedule"
+
+    if not manual_run and already_rebalanced_this_month():
+        log.info("Aquest mes ja s'ha fet el rebalanceig. No cal fer res.")
+        return
+
     client = get_alpaca_client()
 
     # Si el mercat està tancat, les ordres es queden pendents i es poden
     # duplicar en una segona execució. Millor no fer res.
     clock = client.get_clock()
     if not clock.is_open:
-        msg = (f"Mercat tancat (proper obertura: {clock.next_open}). "
-               "No s'ha fet cap rebalanceig. Torna-ho a llançar amb el mercat obert.")
-        log.warning(msg)
-        send_telegram_message(f"⏸️ {msg}")
+        if manual_run:
+            msg = (f"Mercat tancat (proper obertura: {clock.next_open}). "
+                   "No s'ha fet cap rebalanceig. Torna-ho a llançar amb el mercat obert.")
+            log.warning(msg)
+            send_telegram_message(f"⏸️ {msg}")
+        else:
+            # Cap de setmana o festiu: ho tornarà a provar demà automàticament.
+            log.info(f"Mercat tancat avui (proper obertura: {clock.next_open}). Es reintentarà el proper dia.")
         return
 
     account = client.get_account()
