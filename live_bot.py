@@ -16,6 +16,7 @@ REQUISITS:
     export TELEGRAM_CHAT_ID="..."     (opcional però recomanat)
 """
 
+import math
 import os
 import sys
 import json
@@ -93,7 +94,7 @@ def rebalance_to_targets(client, target_dollars: dict):
             continue
 
         side = OrderSide.BUY if diff_value > 0 else OrderSide.SELL
-        notional = abs(round(diff_value, 2))
+        notional = math.floor(abs(diff_value) * 100) / 100
         log.info(f"Ordre: {side.value} {ticker} per ${notional}")
         try:
             order = MarketOrderRequest(
@@ -234,8 +235,8 @@ def main():
         "account": {
             "equity": total_equity_now,
             "peak_equity": max(h["equity"] for h in history),
-            "cash": cash,
-            "invested": total_equity_now - cash,
+            "cash": max(0.0, broker_equity - total_equity_now),
+            "invested": total_equity_now,
         },
         "sleeves": sleeve_summaries,
         "current_holding": next(iter(sleeve_summaries.values())),  # compatibilitat amb versió d'un sol àmbit
