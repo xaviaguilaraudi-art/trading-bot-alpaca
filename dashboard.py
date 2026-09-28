@@ -162,33 +162,49 @@ def _equity_chart_svg(history: list) -> str:
 
     polyline = " ".join(f"{x:.1f},{y:.1f}" for x, y in coords)
 
-    # Marca amb un punt cada vegada que algun àmbit ha canviat d'actiu (compra/venda)
-    markers = []
+    price_dots = []
+    trade_markers = []
     for i, h in enumerate(history):
         sleeves_now = h.get("sleeves", {})
         sleeves_prev = history[i - 1].get("sleeves", {}) if i > 0 else {}
-        changed = i == 0 or sleeves_now != sleeves_prev
-        if changed:
-            x, y = coords[i]
-            detail = ", ".join(f"{k}: {v}" for k, v in sleeves_now.items()) or str(h.get("holding", ""))
-            label = f"{h['date']}: {detail}"
-            markers.append(
-                f'<circle cx="{x:.1f}" cy="{y:.1f}" r="4" fill="#2563eb" stroke="white" stroke-width="1.5">'
-                f"<title>{html_lib.escape(label)}</title></circle>"
+        is_trade = (i == 0 or sleeves_now != sleeves_prev)
+        x, y = coords[i]
+        detail = ", ".join(f"{k}: {v}" for k, v in sleeves_now.items()) or str(h.get("holding", ""))
+        label = html_lib.escape(f"{h['date']}: {detail}")
+        if is_trade:
+            trade_markers.append(
+                f'<circle cx="{x:.1f}" cy="{y:.1f}" r="5" fill="#2563eb" stroke="white" stroke-width="1.5">'
+                f"<title>{label}</title></circle>"
             )
-    markers_svg = "".join(markers)
+        else:
+            price_dots.append(
+                f'<circle cx="{x:.1f}" cy="{y:.1f}" r="2" fill="#d1d5db">'
+                f"<title>{label}</title></circle>"
+            )
 
     first_date = history[0]["date"]
     last_date = history[-1]["date"]
 
+    legend = (
+        '<div class="chart-legend">'
+        '<svg width="10" height="10" viewBox="0 0 10 10" style="vertical-align:middle;margin-right:4px">'
+        '<circle cx="5" cy="5" r="4" fill="#2563eb" stroke="white" stroke-width="1.5"/></svg>'
+        'Compra o canvi de posició&nbsp;&nbsp;'
+        '<svg width="10" height="10" viewBox="0 0 10 10" style="vertical-align:middle;margin-right:4px">'
+        '<circle cx="5" cy="5" r="2.5" fill="#d1d5db"/></svg>'
+        'Variació de preu sense canvi de posició. Passa el ratolí per sobre per veure el detall.'
+        '</div>'
+    )
+
     return f"""
     <svg viewBox="0 0 {W} {H}" class="equity-chart" xmlns="http://www.w3.org/2000/svg">
         <polyline points="{polyline}" fill="none" stroke="var(--accent, #2563eb)" stroke-width="2.5" />
-        {markers_svg}
+        {"".join(price_dots)}
+        {"".join(trade_markers)}
         <text x="{PAD}" y="{H-2}" font-size="11" fill="#888">{html_lib.escape(str(first_date))}</text>
         <text x="{W-PAD}" y="{H-2}" font-size="11" fill="#888" text-anchor="end">{html_lib.escape(str(last_date))}</text>
     </svg>
-    <div class="chart-legend">Cada punt blau = moment en què el bot ha comprat/canviat d'actiu. Passa el ratolí per sobre per veure de quin actiu es tracta.</div>
+    {legend}
     """
 
 
