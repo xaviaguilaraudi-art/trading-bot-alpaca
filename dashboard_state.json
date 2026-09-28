@@ -1,0 +1,73 @@
+{
+  "last_updated": "2026-09-28 08:40",
+  "next_run": "2026-10-01",
+  "mode": "PAPER",
+  "status": "OK",
+  "halt_reason": null,
+  "account": {
+    "equity": 500.0,
+    "peak_equity": 500.0,
+    "cash": 500.0,
+    "invested": 0.0
+  },
+  "sleeves": {
+    "core": {
+      "label": "Accions globals vs bons",
+      "ticker": "EFA",
+      "ticker_label": "Accions de grans empreses internacionals",
+      "capital": 166.66666666666666,
+      "reason": "Accions de grans empreses internacionals ha tingut el millor rendiment recent d'entre les opcions d'aquest àmbit, amb una tendència a l'alça.",
+      "halted": false
+    },
+    "sectors": {
+      "label": "Rotació de sectors del S&P 500",
+      "ticker": "XLK",
+      "ticker_label": "Sector tecnològic",
+      "capital": 166.66666666666666,
+      "reason": "Sector tecnològic ha tingut el millor rendiment recent d'entre les opcions d'aquest àmbit, amb una tendència a l'alça.",
+      "halted": false
+    },
+    "real_assets": {
+      "label": "Or i matèries primeres",
+      "ticker": "DBC",
+      "ticker_label": "Cistella de matèries primeres",
+      "capital": 166.66666666666666,
+      "reason": "Cistella de matèries primeres ha tingut el millor rendiment recent d'entre les opcions d'aquest àmbit, amb una tendència a l'alça.",
+      "halted": false
+    }
+  },
+  "current_holding": {
+    "label": "Accions globals vs bons",
+    "ticker": "EFA",
+    "ticker_label": "Accions de grans empreses internacionals",
+    "capital": 166.66666666666666,
+    "reason": "Accions de grans empreses internacionals ha tingut el millor rendiment recent d'entre les opcions d'aquest àmbit, amb una tendència a l'alça.",
+    "halted": false
+  },
+  "action_required": {
+    "level": "none",
+    "message": "Cap acció necessària. El sistema ja ha ajustat la cartera sol."
+  },
+  "withdrawal": {
+    "amount": 0.0,
+    "threshold": 550.0,
+    "message": "Aquest mes no hi ha marge per retirar res. El compte encara no supera el coixí de seguretat (li falten 50,00 $ per arribar-hi). Deixa-ho créixer sense tocar-ho."
+  },
+  "performance": {
+    "total_return_pct": 0.0,
+    "benchmark_return_pct": 0.0,
+    "since": "2026-09-28"
+  },
+  "history": [
+    {
+      "date": "2026-09-28",
+      "equity": 500.0,
+      "spy_price": 771.3499755859375,
+      "sleeves": {
+        "core": "EFA",
+        "sectors": "XLK",
+        "real_assets": "DBC"
+      }
+    }
+  ]
+}

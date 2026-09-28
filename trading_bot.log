@@ -1,0 +1,7 @@
+2026-09-28 08:40:00,062 [INFO] === Iniciant rebalanceig mensual — mode: PAPER ===
+2026-09-28 08:40:02,110 [INFO] Ordre: buy EFA per $166.67
+2026-09-28 08:40:02,125 [INFO] Ordre: buy XLK per $166.67
+2026-09-28 08:40:02,138 [INFO] Ordre: buy DBC per $166.67
+2026-09-28 08:40:02,150 [WARNING] No s'ha pogut enviar l'ordre de DBC: {"buying_power":"166.66","code":40310000,"cost_basis":"166.67","message":"insufficient buying power"}
+2026-09-28 08:40:02,151 [INFO] Dashboard actualitzat: dashboard.html
+2026-09-28 08:40:02,487 [INFO] === Rebalanceig completat ===

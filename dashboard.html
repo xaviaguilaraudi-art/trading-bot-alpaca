@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<title>Dashboard del bot de trading</title>
+<style>
+  :root {
+    --accent: #2563eb;
+    --ok: #16a34a;
+    --warn: #d97706;
+    --danger: #dc2626;
+    --bg: #f7f8fa;
+    --card-bg: #ffffff;
+    --text: #1f2430;
+    --muted: #6b7280;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 24px; background: var(--bg);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: var(--text);
+  }
+  .container { max-width: 720px; margin: 0 auto; }
+  h1 { font-size: 20px; margin: 0 0 4px 0; }
+  .subtitle { color: var(--muted); font-size: 13px; margin-bottom: 20px; }
+  .banner {
+    display: flex; align-items: center; gap: 14px;
+    padding: 16px 18px; border-radius: 12px; margin-bottom: 18px;
+  }
+  .banner-ok { background: #ecfdf3; border: 1px solid #a7e8c1; }
+  .banner-alert { background: #fef2f2; border: 1px solid #fca5a5; }
+  .banner-icon {
+    width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: bold; font-size: 16px; color: white;
+  }
+  .banner-ok .banner-icon { background: var(--ok); }
+  .banner-alert .banner-icon { background: var(--danger); }
+  .banner-title { font-weight: 600; font-size: 15px; }
+  .banner-sub { font-size: 13px; color: var(--muted); margin-top: 2px; }
+  .card {
+    background: var(--card-bg); border-radius: 12px; padding: 18px 20px;
+    margin-bottom: 14px; border: 1px solid #e5e7eb;
+  }
+  .card-wide { padding-bottom: 14px; }
+  .card-label {
+    font-size: 12px; text-transform: uppercase; letter-spacing: .04em;
+    color: var(--muted); margin-bottom: 8px; font-weight: 600;
+  }
+  .action { font-size: 15px; line-height: 1.5; padding: 10px 12px; border-radius: 8px; }
+  .action-none { background: #ecfdf3; color: #14532d; }
+  .action-info { background: #eff6ff; color: #1e3a8a; }
+  .action-warning { background: #fffbeb; color: #78350f; }
+  .holding-name { font-size: 16px; font-weight: 600; }
+  .holding-ticker { font-size: 13px; color: var(--muted); margin: 4px 0 10px 0; }
+  .holding-reason { font-size: 13px; color: #374151; }
+  .sleeves-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px;
+  }
+  .sleeve-item { border: 1px solid #e5e7eb; border-radius: 10px; padding: 12px; }
+  .sleeve-name { font-size: 12px; font-weight: 600; color: var(--muted); margin-bottom: 4px; }
+  .sleeve-halted {
+    display: inline-block; background: #fef2f2; color: #991b1b; font-size: 10px;
+    padding: 1px 6px; border-radius: 999px; margin-left: 4px; font-weight: 600;
+  }
+  .perf-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 8px 0 4px 0;
+  }
+  .perf-value { font-size: 20px; font-weight: 700; }
+  .perf-pos { color: var(--ok); }
+  .perf-neg { color: var(--danger); }
+  .perf-caption { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .perf-note { font-size: 13px; color: #374151; margin-top: 10px; }
+  .equity-chart { width: 100%; height: auto; margin-top: 8px; }
+  .chart-legend { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .chart-empty { font-size: 13px; color: var(--muted); padding: 20px 0; text-align: center; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th, td { text-align: left; padding: 6px 4px; border-bottom: 1px solid #f0f0f0; }
+  th { color: var(--muted); font-weight: 600; font-size: 11px; text-transform: uppercase; }
+  .footer {
+    font-size: 12px; color: var(--muted); text-align: center; margin-top: 20px; line-height: 1.6;
+  }
+  .mode-pill {
+    display: inline-block; padding: 2px 10px; border-radius: 999px;
+    font-size: 11px; font-weight: 600; margin-left: 8px;
+  }
+  .mode-paper { background: #eff6ff; color: #1e3a8a; }
+  .mode-live { background: #fef2f2; color: #991b1b; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>El teu bot de trading
+    <span class="mode-pill mode-paper">PAPER (simulació)</span>
+  </h1>
+  <div class="subtitle">Última actualització: 2026-09-28 08:40 · Pròxima revisió: 2026-10-01</div>
+
+  <div class="banner banner-ok"><div class="banner-icon">✓</div><div><div class="banner-title">Tot funciona amb normalitat</div><div class="banner-sub">El sistema opera automàticament segons les regles configurades.</div></div></div>
+  <div class="card"><div class="card-label">Què has de fer tu, ara mateix</div><div class="action action-none">Cap acció necessària. El sistema ja ha ajustat la cartera sol.</div></div>
+  <div class="card"><div class="card-label">On està invertit el teu capital ara (3 àmbits)</div><div class="sleeves-grid"><div class="sleeve-item"><div class="sleeve-name">Accions globals vs bons</div><div class="holding-name">Accions de grans empreses internacionals</div><div class="holding-ticker">Fons: EFA · 166.67 $</div><div class="holding-reason">Accions de grans empreses internacionals ha tingut el millor rendiment recent d&#x27;entre les opcions d&#x27;aquest àmbit, amb una tendència a l&#x27;alça.</div></div><div class="sleeve-item"><div class="sleeve-name">Rotació de sectors del S&amp;P 500</div><div class="holding-name">Sector tecnològic</div><div class="holding-ticker">Fons: XLK · 166.67 $</div><div class="holding-reason">Sector tecnològic ha tingut el millor rendiment recent d&#x27;entre les opcions d&#x27;aquest àmbit, amb una tendència a l&#x27;alça.</div></div><div class="sleeve-item"><div class="sleeve-name">Or i matèries primeres</div><div class="holding-name">Cistella de matèries primeres</div><div class="holding-ticker">Fons: DBC · 166.67 $</div><div class="holding-reason">Cistella de matèries primeres ha tingut el millor rendiment recent d&#x27;entre les opcions d&#x27;aquest àmbit, amb una tendència a l&#x27;alça.</div></div></div></div>
+  <div class="card"><div class="card-label">Retirada suggerida aquest mes</div><div class="action action-info">Aquest mes no hi ha marge per retirar res. El compte encara no supera el coixí de seguretat (li falten 50,00 $ per arribar-hi). Deixa-ho créixer sense tocar-ho.</div></div>
+  <div class="card"><div class="card-label">Estat de la tresoreria</div><div class="perf-grid"><div><div class="perf-value">500.00 $</div><div class="perf-caption">Total del compte</div></div><div><div class="perf-value">0.00 $</div><div class="perf-caption">Invertit ara mateix</div></div><div><div class="perf-value">500.00 $</div><div class="perf-caption">Efectiu disponible</div></div></div><div class="perf-note">Pots ingressar o retirar diners quan vulguis directament des del teu compte d'Alpaca (transferència bancària) — el bot no ho gestiona, només opera amb els diners que hi hagi en cada moment.</div></div>
+  <div class="card card-wide"><div class="card-label">Com va el teu capital</div><div class="perf-grid"><div><div class="perf-value">500.00 $</div><div class="perf-caption">Valor actual del compte</div></div><div><div class="perf-value perf-pos">+0.0%</div><div class="perf-caption">Guany/pèrdua des de l'inici (2026-09-28)</div></div><div><div class="perf-value">+0.0%</div><div class="perf-caption">Referència: comprar i mantenir S&amp;P 500</div></div></div><div class="perf-note">El sistema ho ha fet <b>0.0 punts millor</b> que simplement comprar i mantenir el mercat en aquest període.</div></div>
+
+  <div class="card">
+    <div class="card-label">Evolució del valor del compte</div>
+    <div class="chart-empty">Encara no hi ha prou historial per mostrar un gràfic.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-label">Historial dels últims rebalancejos</div>
+    <table>
+      <thead><tr><th>Data</th><th>Actiu</th><th>Valor del compte</th></tr></thead>
+      <tbody><tr><td>2026-09-28</td><td>EFA, XLK, DBC</td><td>500.00 $</td></tr></tbody>
+    </table>
+  </div>
+
+  <div class="footer">
+    Aquest dashboard es genera automàticament cada vegada que el bot fa un rebalanceig.
+    Obre de nou aquest fitxer (o refresca la pàgina) després de cada execució per veure l'estat actualitzat.<br>
+    Això no és una recomanació d'inversió personalitzada; és informació generada pel teu propi sistema.
+  </div>
+</div>
+</body>
+</html>
