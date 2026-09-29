@@ -1,14 +1,14 @@
 {
-  "last_updated": "2026-09-28 23:59",
+  "last_updated": "2026-09-29 18:20",
   "next_run": "2026-10-01",
   "mode": "PAPER",
   "status": "OK",
   "halt_reason": null,
   "account": {
-    "equity": 498.31,
+    "equity": 495.03,
     "peak_equity": 498.69008012024693,
-    "cash": 3.0178618970412003,
-    "invested": 495.2921381029588
+    "cash": 4.657530040169263,
+    "invested": 490.3724699598307
   },
   "sleeves": {
     "core": {
@@ -54,8 +54,8 @@
     "message": "Aquest mes no hi ha marge per retirar res. El compte encara no supera el coixí de seguretat (li falten 51,31 $ per arribar-hi). Deixa-ho créixer sense tocar-ho."
   },
   "performance": {
-    "total_return_pct": -0.006813734928251991,
-    "benchmark_return_pct": -0.0025531468079220687,
+    "total_return_pct": -0.016678916409186728,
+    "benchmark_return_pct": -0.00443640070214113,
     "since": "2026-09-28"
   },
   "history": [
@@ -83,6 +83,16 @@
       "date": "2026-09-28 23:59",
       "equity": 495.2921381029588,
       "spy_price": 765.33,
+      "sleeves": {
+        "core": "EFA",
+        "sectors": "XLK",
+        "real_assets": "DBC"
+      }
+    },
+    {
+      "date": "2026-09-29 18:20",
+      "equity": 490.3724699598307,
+      "spy_price": 763.885,
       "sleeves": {
         "core": "EFA",
         "sectors": "XLK",
