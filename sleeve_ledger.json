@@ -1,16 +1,16 @@
 {
   "core": {
-    "capital": 164.12776055112187,
+    "capital": 162.76810900591389,
     "holding": "EFA",
     "holding_price": 105.0199966430664
   },
   "sectors": {
-    "capital": 163.28412079809243,
+    "capital": 164.35472562338302,
     "holding": "XLK",
     "holding_price": 195.22000122070312
   },
   "real_assets": {
-    "capital": 158.10248941836943,
+    "capital": 156.48302387841747,
     "holding": "DBC",
     "holding_price": 32.70500183105469
   }
