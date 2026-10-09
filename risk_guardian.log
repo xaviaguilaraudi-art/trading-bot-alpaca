@@ -18,3 +18,4 @@
 2026-10-09 18:32:59,234 [WARNING] [core] CIRCUIT BREAKER: Drawdown de 20.1% supera el límit de 20.0%. Aturant operativa i movent a l'actiu segur d'aquest àmbit.
 2026-10-09 18:32:59,293 [INFO] Posició tancada per protecció de risc: EFA
 2026-10-09 18:32:59,846 [INFO] Comprovació de risc completada.
+2026-10-09 22:56:45,825 [INFO] Comprovació de risc completada.
