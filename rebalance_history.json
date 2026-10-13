@@ -218,5 +218,15 @@
       "sectors": "XLK",
       "real_assets": "DBC"
     }
+  },
+  {
+    "date": "2026-10-13 23:28",
+    "equity": 520.5071728797813,
+    "spy_price": 778.03,
+    "sleeves": {
+      "core": "AGG",
+      "sectors": "XLK",
+      "real_assets": "DBC"
+    }
   }
 ]
