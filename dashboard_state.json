@@ -1,14 +1,14 @@
 {
-  "last_updated": "2026-10-14 17:38",
+  "last_updated": "2026-10-14 21:00",
   "next_run": "2026-10-01",
   "mode": "PAPER",
   "status": "OK",
   "halt_reason": null,
   "account": {
-    "equity": 496.72,
+    "equity": 496.03,
     "peak_equity": 520.5071728797813,
     "cash": 0.0,
-    "invested": 518.8066611076238
+    "invested": 516.8968634672946
   },
   "sleeves": {
     "core": {
@@ -54,8 +54,8 @@
     "message": "Aquest mes no hi ha marge per retirar res. El compte encara no supera el coixí de seguretat (li falten 51,31 $ per arribar-hi). Deixa-ho créixer sense tocar-ho."
   },
   "performance": {
-    "total_return_pct": 0.04033884328023163,
-    "benchmark_return_pct": 0.0014740189589541597,
+    "total_return_pct": 0.03650921498710691,
+    "benchmark_return_pct": 0.002021400713675403,
     "since": "2026-09-28"
   },
   "history": [
@@ -293,6 +293,16 @@
       "date": "2026-10-14 17:38",
       "equity": 518.8066611076238,
       "spy_price": 768.42,
+      "sleeves": {
+        "core": "AGG",
+        "sectors": "XLK",
+        "real_assets": "DBC"
+      }
+    },
+    {
+      "date": "2026-10-14 21:00",
+      "equity": 516.8968634672946,
+      "spy_price": 768.84,
       "sleeves": {
         "core": "AGG",
         "sectors": "XLK",
