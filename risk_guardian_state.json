@@ -9,10 +9,10 @@
     "equity_peak": 224.4841561172775,
     "day_start_equity": 188.7707068840404,
     "day_start_date": "2026-10-16",
-    "halted": false
+    "halted": true
   },
   "real_assets": {
-    "equity_peak": 182.3521469085302,
+    "equity_peak": 188.095072054637,
     "day_start_equity": 182.3521469085302,
     "day_start_date": "2026-10-16",
     "halted": false
