@@ -1,14 +1,14 @@
 {
-  "last_updated": "2026-10-16 20:08",
+  "last_updated": "2026-10-19 18:52",
   "next_run": "2026-10-01",
   "mode": "PAPER",
   "status": "OK",
   "halt_reason": null,
   "account": {
-    "equity": 492.38,
+    "equity": 494.77,
     "peak_equity": 520.5071728797813,
-    "cash": 0.8409939508975413,
-    "invested": 491.53900604910245
+    "cash": 0.0,
+    "invested": 497.33515770834595
   },
   "sleeves": {
     "core": {
@@ -54,8 +54,8 @@
     "message": "Aquest mes no hi ha marge per retirar res. El compte encara no supera el coixí de seguretat (li falten 51,31 $ per arribar-hi). Deixa-ho créixer sense tocar-ho."
   },
   "performance": {
-    "total_return_pct": -0.014339715900144157,
-    "benchmark_return_pct": -0.005153210142847198,
+    "total_return_pct": -0.002716962831051828,
+    "benchmark_return_pct": 0.000248926460292731,
     "since": "2026-09-28"
   },
   "history": [
@@ -343,6 +343,16 @@
       "date": "2026-10-16 20:08",
       "equity": 491.53900604910245,
       "spy_price": 763.335,
+      "sleeves": {
+        "core": "AGG",
+        "sectors": "AGG",
+        "real_assets": "DBC"
+      }
+    },
+    {
+      "date": "2026-10-19 18:52",
+      "equity": 497.33515770834595,
+      "spy_price": 767.48,
       "sleeves": {
         "core": "AGG",
         "sectors": "AGG",
