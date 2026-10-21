@@ -1,16 +1,16 @@
 {
   "core": {
-    "capital": 140.45990449435033,
+    "capital": 141.66301899379962,
     "holding": "AGG",
     "holding_price": 94.565
   },
   "sectors": {
-    "capital": 165.36010569028045,
+    "capital": 165.35143720078108,
     "holding": "AGG",
     "holding_price": 95.38
   },
   "real_assets": {
-    "capital": 209.60659127515012,
+    "capital": 213.67629909373235,
     "holding": "DBC",
     "holding_price": 32.70500183105469
   }
