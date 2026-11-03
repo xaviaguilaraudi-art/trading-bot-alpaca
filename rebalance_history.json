@@ -498,5 +498,15 @@
       "sectors": "AGG",
       "real_assets": "DBC"
     }
+  },
+  {
+    "date": "2026-11-03 19:51",
+    "equity": 701.7924521311693,
+    "spy_price": 754.74,
+    "sleeves": {
+      "core": "AGG",
+      "sectors": "AGG",
+      "real_assets": "DBC"
+    }
   }
 ]
