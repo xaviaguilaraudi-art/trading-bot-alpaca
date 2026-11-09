@@ -57,3 +57,6 @@
 2026-11-05 20:19:47,489 [INFO] Comprovació de risc completada.
 2026-11-06 19:44:01,431 [INFO] Comprovació de risc completada.
 2026-11-06 23:50:32,771 [INFO] Comprovació de risc completada.
+2026-11-09 22:45:04,005 [WARNING] [real_assets] CIRCUIT BREAKER: Drawdown de 21.0% supera el límit de 20.0%. Aturant operativa i movent a l'actiu segur d'aquest àmbit.
+2026-11-09 22:45:04,134 [INFO] Posició tancada per protecció de risc: DBC
+2026-11-09 22:45:04,779 [INFO] Comprovació de risc completada.
