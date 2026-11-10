@@ -568,5 +568,15 @@
       "sectors": "AGG",
       "real_assets": "AGG"
     }
+  },
+  {
+    "date": "2026-11-10 20:03",
+    "equity": 660.1147735662189,
+    "spy_price": 748.185,
+    "sleeves": {
+      "core": "AGG",
+      "sectors": "AGG",
+      "real_assets": "AGG"
+    }
   }
 ]
