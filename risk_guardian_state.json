@@ -1,20 +1,20 @@
 {
   "core": {
-    "equity_peak": 212.5708112422664,
-    "day_start_equity": 212.5708112422664,
-    "day_start_date": "2026-11-11",
+    "equity_peak": 215.3919011604078,
+    "day_start_equity": 215.3919011604078,
+    "day_start_date": "2026-11-12",
     "halted": false
   },
   "sectors": {
     "equity_peak": 224.4841561172775,
-    "day_start_equity": 200.2086471697603,
-    "day_start_date": "2026-11-11",
+    "day_start_equity": 201.1322349738565,
+    "day_start_date": "2026-11-12",
     "halted": false
   },
   "real_assets": {
     "equity_peak": 337.89124288662657,
-    "day_start_equity": 249.08913814785572,
-    "day_start_date": "2026-11-11",
+    "day_start_equity": 247.15461548438992,
+    "day_start_date": "2026-11-12",
     "halted": true
   }
 }
